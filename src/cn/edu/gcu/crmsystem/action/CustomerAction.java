@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
 
 import cn.edu.gcu.crmsystem.entity.Customer;
 import cn.edu.gcu.crmsystem.service.CustomerService;
@@ -17,8 +18,8 @@ import cn.edu.gcu.crmsystem.service.CustomerService;
  *
  */
 @SuppressWarnings("serial")
-public class CustomerAction extends ActionSupport {
-	
+public class CustomerAction extends ActionSupport implements ModelDriven<Customer> {
+	//依赖的业务逻辑层
 	CustomerService service = new CustomerService();
 	
 	/**
@@ -34,5 +35,30 @@ public class CustomerAction extends ActionSupport {
 		request.setAttribute("list", list);
 		
 		return "list";
+	}
+	/**
+	 * 跳转到添加页面
+	 * @return
+	 */
+	public String toAddPage(){
+		return "toAddPage";
+	}
+	/**
+	 * 添加客户
+	 * @return
+	 */
+	public String addCustomer(){
+		service.addCustomer(customer);
+		return "addCustomer";
+	}
+	
+	/**
+	 * 使用模型驱动封装表单数据
+	 * @return
+	 */
+	Customer customer = new Customer();
+	@Override
+	public Customer getModel() {
+		return customer;
 	}
 }

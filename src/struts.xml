@@ -7,6 +7,11 @@
 	<package name="customerAction" extends="struts-default" namespace="/">
 		<action name="customer_*" class="cn.edu.gcu.crmsystem.action.CustomerAction" method="{1}">
 			<result name="list">/jsp/customer/list.jsp</result>
+			<result name="toAddPage">/jsp/customer/add.jsp</result>
+			<!-- 这样写得没有得到客户集合list,页面显示不了客户 -->
+			<!-- <result name="addCustomer">/jsp/customer/list.jsp</result> -->
+			<!-- 需要通过重定向到action调用list的方法 -->
+			<result name="addCustomer" type="redirectAction">customer_list</result>
 		</action>
 	</package>
 </struts>

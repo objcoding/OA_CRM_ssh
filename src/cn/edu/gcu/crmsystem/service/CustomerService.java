@@ -11,13 +11,23 @@ import cn.edu.gcu.crmsystem.entity.Customer;
  *
  */
 public class CustomerService {
+	
+	CustomerDao dao = new CustomerDaoImpl();
+	
 	/**
 	 * 查找所有客户
 	 * @return
 	 */
 	public List<Customer> findAll() {
-		CustomerDao dao = new CustomerDaoImpl();
 		return dao.findAll();
+	}
+	
+	/**
+	 * 添加客户
+	 * @param customer
+	 */
+	public void addCustomer(Customer customer) {
+		dao.addCustomer(customer);
 	}
 
 }

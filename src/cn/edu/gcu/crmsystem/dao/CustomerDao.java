@@ -11,5 +11,10 @@ public interface CustomerDao {
 	 * @return
 	 */
 	List<Customer> findAll();
+	/**
+	 * 添加客户
+	 * @param customer
+	 */
+	void addCustomer(Customer customer);
 
 }
