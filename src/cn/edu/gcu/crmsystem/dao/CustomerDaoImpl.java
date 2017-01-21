@@ -7,7 +7,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
+import cn.edu.gcu.crmsystem.entity.User;
 import cn.edu.gcu.crmsystem.entity.Customer;
 import cn.edu.gcu.crmsystem.utils.HibernateUtils;
 
@@ -68,18 +70,8 @@ public class CustomerDaoImpl implements CustomerDao {
 		Session session = null;
 		Transaction tx = null;
 		try {
-			//得到sessionFactory
 			sessionFactory = HibernateUtils.getSessionFactory();
-			//得到session
 			session = sessionFactory.openSession();
-			
-			/*
-			 * 使用本地线程绑定的session
-			 >>>在正式项目才使用
-			session = HibernateUtils.getSessionobject();*/
-			
-			
-			//开启事务
 			tx = session.beginTransaction();
 			
 			//添加
@@ -89,16 +81,40 @@ public class CustomerDaoImpl implements CustomerDao {
 			}else{
 				System.out.println("添加失败");
 			}
-			
-			//提交事务
+
 			tx.commit();
 		}catch(Exception e) {
 			tx.rollback();
 		}finally {
-			//在使用本地线程绑定session时不用关闭
 			session.close();
-			//由于工具类只创建一个session,所以在项目中不需要关闭
-			//sessionFactory.close();
 		}
+	}
+	
+	/**
+	 * 查找客户
+	 */
+	@Override
+	public User findUser(User form) {
+		SessionFactory sessionFactory = null;
+		Session session = null;
+		Transaction tx = null;
+		User user = null;
+		try {
+			sessionFactory = HibernateUtils.getSessionFactory();
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			
+			//根据uid查找用户
+			Criteria criteria = session.createCriteria(User.class);
+			criteria.add(Restrictions.eq("username", form.getUsername()));
+			user = (User)criteria.uniqueResult();
+
+			tx.commit();
+		}catch(Exception e) {
+			tx.rollback();
+		}finally {
+			session.close();
+		}
+		return user;
 	}
 }

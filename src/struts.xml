@@ -5,13 +5,27 @@
 <struts>
 
 	<package name="customerAction" extends="struts-default" namespace="/">
+		<!-- 声明拦截器 -->
+		<interceptors>
+			<interceptor name="login-inerceptor" class="cn.edu.gcu.crmsystem.interceptor.LoginInterceptor"></interceptor>
+		</interceptors>
 		<action name="customer_*" class="cn.edu.gcu.crmsystem.action.CustomerAction" method="{1}">
+			<!-- 使用拦截器 -->
+			<interceptor-ref name="login-inerceptor">
+				<!-- 配置某些方法不拦截 -->
+				<param name="excludeMethods">login</param>
+			</interceptor-ref>
+			<!-- 由于使用了自定义拦截器,所以默认拦截器不会再使用这时需要再配置使用才能生效  -->
+			 <interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="list">/jsp/customer/list.jsp</result>
 			<result name="toAddPage">/jsp/customer/add.jsp</result>
 			<!-- 这样写得没有得到客户集合list,页面显示不了客户 -->
 			<!-- <result name="addCustomer">/jsp/customer/list.jsp</result> -->
 			<!-- 需要通过重定向到action调用list的方法 -->
 			<result name="addCustomer" type="redirectAction">customer_list</result>
+			<!-- 登录信息 -->
+			<result name="loginsuccess">/index.htm</result>
+			<result name="login">/login.jsp</result>
 		</action>
 	</package>
 </struts>
