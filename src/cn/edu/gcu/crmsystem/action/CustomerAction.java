@@ -2,10 +2,6 @@ package cn.edu.gcu.crmsystem.action;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts2.ServletActionContext;
-
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -19,20 +15,28 @@ import cn.edu.gcu.crmsystem.service.CustomerService;
  */
 @SuppressWarnings("serial")
 public class CustomerAction extends ActionSupport implements ModelDriven<Customer> {
+
 	//依赖的业务逻辑层
 	CustomerService service = new CustomerService();
 	
+	/*
+	 * 把客户集合存放到值栈中
+	 */
+	private List<Customer> list;
+	public List<Customer> getList() {
+		return list;
+	}
 	/**
 	 * 得到所有客户列表
 	 * @return
 	 */
 	public String list() {
 		
-		List<Customer> list = service.findAll();
+		list = service.findAll();
 		
-		//放到域对象里面
-		HttpServletRequest request = ServletActionContext.getRequest();
-		request.setAttribute("list", list);
+//		//放到域对象里面
+//		HttpServletRequest request = ServletActionContext.getRequest();
+//		request.setAttribute("list", list);
 		
 		return "list";
 	}
